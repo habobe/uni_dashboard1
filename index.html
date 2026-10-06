@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="light-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Statistical Dashboards</title>
+    <!-- ربط ملف الـ CSS الخاص بالتصميم -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="dashboard-container" style="width: 100vw; height: 100vh; overflow: hidden; display: flex; margin: 0; padding: 0;">
+        <!-- القائمة الجانبية الاحترافية (Sidebar) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-and-title">
+                    <div class="brand-logo">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h2>UniAnalytics</h2>
+                </div>
+                <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Toggle Sidebar">
+                    <i class="fa-solid fa-angles-left" id="toggle-icon"></i>
+                </button>
+            </div>
+
+            <div class="user-profile">
+                <div class="avatar-circle">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <div class="user-info">
+                    <h3>Habiba Elkamary</h3>
+                    <span>Data Analyst</span>
+                </div>
+            </div>
+            
+            <div class="menu-title">Main Dashboards</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="switchTab('overview')"><span class="icon-box"><i class="fa-solid fa-chart-pie"></i></span> <span class="link-text">Overview</span></a></li>
+                <li><a href="#" onclick="switchTab('performance')"><span class="icon-box"><i class="fa-solid fa-gauge-high"></i></span> <span class="link-text">Performance</span></a></li>
+                <li><a href="#" onclick="switchTab('faculty')"><span class="icon-box"><i class="fa-solid fa-graduation-cap"></i></span> <span class="link-text">Faculty & Courses</span></a></li>
+                <li><a href="#" onclick="switchTab('library')"><span class="icon-box"><i class="fa-solid fa-book-bookmark"></i></span> <span class="link-text">Library & Activities</span></a></li>
+                <li><a href="#" onclick="switchTab('research')"><span class="icon-box"><i class="fa-solid fa-flask-vial"></i></span> <span class="link-text">Research & Project</span></a></li>
+                <!-- صفحة البحث السريع وجلب بيانات الداتابيز -->
+                <li class="active"><a href="#" onclick="switchTab('student_search')"><span class="icon-box"><i class="fa-solid fa-magnifying-glass"></i></span> <span class="link-text">Student Research</span></a></li>
+            </ul>
+        </aside>
+
+        <!-- مساحة العرض الرئيسية (Main Content) -->
+        <main class="main-content" style="flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; margin: 0; padding: 0;">
+            <!-- شريط البحث العلوي مع زر الـ Dark/Light Mode -->
+            <header class="top-bar">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search analytics & reports...">
+                </div>
+                <div class="top-controls">
+                    <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <i class="fa-solid fa-moon" id="theme-icon"></i>
+                    </button>
+                    <div class="top-icons">
+                        <i class="fa-regular fa-heart"></i>
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- منطقة عرض التقارير أو صفحة البحث بنسبة 100% -->
+            <section class="powerbi-wrapper" style="width: 100%; height: 100%; flex: 1; padding: 0; margin: 0; display: flex; flex-direction: column; overflow: hidden;">
+                <div class="embed-placeholder" id="content-display" style="width: 100%; height: 100%; display: flex; flex-direction: column; flex: 1; padding: 0; margin: 0; overflow: hidden;">
+                    <i class="fa-solid fa-chart-column" style="font-size: 45px; color: #ff69b4; margin-bottom: 15px;"></i>
+                    <h2 id="tab-title">Student Research & Database ID Search</h2>
+                    <p id="tab-desc">Enter the Student ID to view their academic record, enrolled courses, and borrowed books from the database.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- السكريبت الديناميكي المحدث بالكامل -->
+    <script>
+        // فتح صفحة البحث افتراضياً عند التحميل
+        window.onload = function() {
+            switchTab('student_search');
+        };
+
+        function switchTab(tabName) {
+            const items = document.querySelectorAll('.nav-links li');
+            items.forEach(item => item.classList.remove('active'));
+            
+            event && event.currentTarget && event.currentTarget.parentElement.classList.add('active');
+
+            const container = document.getElementById('content-display');
+
+            // روابط الـ 5 تقارير مع تفعيل إخفاء الفلاتر والشريط السفلي بالكامل
+            const biEmbedLinks = {
+                'overview': "https://app.powerbi.com/reportEmbed?reportId=61ae8e4e-2ffb-4221-9f80-7d1cdd8ff99f&autoAuth=true&ctid=19fe7ed7-01ca-4ae6-9cb4-3d75b5264420&filterPaneEnabled=false&navContentPaneEnabled=false",
+                'performance': "https://app.powerbi.com/reportEmbed?reportId=d51d3a02-9754-462d-b973-f3234805edd8&autoAuth=true&ctid=19fe7ed7-01ca-4ae6-9cb4-3d75b5264420&filterPaneEnabled=false&navContentPaneEnabled=false",
+                'faculty': "https://app.powerbi.com/reportEmbed?reportId=901b982b-0c82-45c9-9eed-677ced828e54&autoAuth=true&ctid=19fe7ed7-01ca-4ae6-9cb4-3d75b5264420&filterPaneEnabled=false&navContentPaneEnabled=false",
+                'library': "https://app.powerbi.com/reportEmbed?reportId=01161268-3fb1-4029-a960-bb38d57d8726&autoAuth=true&ctid=19fe7ed7-01ca-4ae6-9cb4-3d75b5264420&filterPaneEnabled=false&navContentPaneEnabled=false",
+                'research': "https://app.powerbi.com/reportEmbed?reportId=f8d5a665-17b1-46d9-8a32-0b1e6121220e&autoAuth=true&ctid=19fe7ed7-01ca-4ae6-9cb4-3d75b5264420&filterPaneEnabled=false&navContentPaneEnabled=false"
+            };
+
+            if (tabName === 'student_search') {
+                container.innerHTML = `
+                    <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; overflow-y: auto;">
+                        <div style="width: 100%; max-width: 650px; text-align: left; padding: 20px;">
+                            <h2 style="color: #ff69b4; margin-bottom: 10px;"><i class="fa-solid fa-magnifying-glass"></i> Student Research & Database ID Search</h2>
+                            <p style="color: var(--text-secondary, #64748b); margin-bottom: 20px;">Enter the Student ID to view their academic record, enrolled courses, and borrowed books from the database.</p>
+                            
+                            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                                <input type="text" id="liveStudentId" placeholder="Enter Student ID (e.g. 11)..." style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; background: var(--bg-input, #fff); color: inherit; font-size: 15px;">
+                                <button onclick="fetchStudentLive()" style="background: #ff69b4; border: none; color: white; padding: 0 25px; border-radius: 8px; cursor: pointer; font-weight: bold;">Search</button>
+                            </div>
+
+                            <div id="liveResultBox" style="background: var(--bg-card, #f8fafc); padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; min-height: 120px;">
+                                <span style="color: #94a3b8;">نتيجة البحث والبيانات ستظهر هنا...</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                let embedUrl = biEmbedLinks[tabName];
+                if (!embedUrl) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary, #64748b);">
+                            <i class="fa-solid fa-person-digging" style="font-size: 45px; color: #ff69b4; margin-bottom: 15px;"></i>
+                            <h2>This dashboard is coming soon!</h2>
+                            <p>قريباً سيتم نشر وربط هذه الصفحة فور الانتهاء منها.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+               container.innerHTML = `
+                    <div style="position: relative; width: 100%; height: 100%; overflow: hidden; background: #0f0a1d; padding: 0; margin: 0;">
+                        <iframe title="University Dashboard" src="${embedUrl}" frameborder="0" allowFullScreen="true" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; background-color: #0f0a1d;"></iframe>
+                    </div>
+                `;
+            }
+        }
+
+        // دالة جلب بيانات الطالب ديناميكياً من الباك إند والداتابيز
+        function fetchStudentLive() {
+            const studentId = document.getElementById('liveStudentId').value.trim();
+            const resultBox = document.getElementById('liveResultBox');
+
+            if (!studentId) {
+                alert('من فضلك ادخل رقم الطالب أولاً');
+                return;
+            }
+
+            resultBox.innerHTML = `<span style="color: #ff69b4;"><i class="fa-solid fa-spinner fa-spin"></i> جاري البحث في قاعدة البيانات...</span>`;
+
+            fetch(`/get_student/${studentId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        resultBox.innerHTML = `<h4 style="color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> ${data.error}</h4>`;
+                    } else {
+                        let coursesList = data.courses.length > 0 ? data.courses.map(c => `<li>${c}</li>`).join('') : '<li>No courses registered</li>';
+                        let booksList = data.books.length > 0 ? data.books.map(b => `<li>${b}</li>`).join('') : '<li>No books borrowed</li>';
+                        let researchList = data.research_projects && data.research_projects.length > 0 ? data.research_projects.map(r => `<li>${r}</li>`).join('') : '<li>No research projects registered</li>';
+                        let clubsList = data.clubs && data.clubs.length > 0 ? data.clubs.map(cl => `<li>${cl}</li>`).join('') : '<li>No club membership</li>';
+
+                        resultBox.innerHTML = `
+                            <h4 style="color: #ff69b4; margin-top: 0; font-size: 17px;"><i class="fa-solid fa-user-check"></i> Student: ${data.name}</h4>
+                            <p style="margin: 4px 0;"><strong>ID:</strong> ${data.student_id}</p>
+                            <p style="margin: 4px 0;"><strong>Email:</strong> ${data.email}</p>
+                            <p style="margin: 4px 0;"><strong>Phone:</strong> ${data.phone || 'N/A'}</p>
+                            <hr style="border-color: #cbd5e1; margin: 10px 0;">
+                            
+                            <h5 style="color: #0284c7; margin: 4px 0;"><i class="fa-solid fa-book"></i> Enrolled Courses:</h5>
+                            <ul style="padding-left: 20px; margin: 0 0 10px 0;">${coursesList}</ul>
+                            
+                            <h5 style="color: #0284c7; margin: 4px 0;"><i class="fa-solid fa-users"></i> Enrolled Clubs:</h5>
+                            <ul style="padding-left: 20px; margin: 0 0 10px 0;">${clubsList}</ul>
+                            
+                            <h5 style="color: #0284c7; margin: 4px 0;"><i class="fa-solid fa-book-open-reader"></i> Borrowed Books:</h5>
+                            <ul style="padding-left: 20px; margin: 0 0 10px 0;">${booksList}</ul>
+                            
+                            <h5 style="color: #0284c7; margin: 4px 0;"><i class="fa-solid fa-flask"></i> Research Projects:</h5>
+                            <ul style="padding-left: 20px; margin: 0;">${researchList}</ul>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    resultBox.innerHTML = `<h4 style="color: #ef4444;">حدث خطأ أثناء الاتصال بالسيرفر.</h4>`;
+                });
+        }
+
+        function toggleTheme() {
+            const htmlTag = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+
+            if (htmlTag.classList.contains('light-mode')) {
+                htmlTag.classList.remove('light-mode');
+                htmlTag.classList.add('dark-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                htmlTag.classList.remove('dark-mode');
+                htmlTag.classList.add('light-mode');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const toggleIcon = document.getElementById('toggle-icon');
+            sidebar.classList.toggle('collapsed');
+
+            if (sidebar.classList.contains('collapsed')) {
+                toggleIcon.classList.remove('fa-angles-left');
+                toggleIcon.classList.add('fa-angles-right');
+            } else {
+                toggleIcon.classList.remove('fa-angles-right');
+                toggleIcon.classList.add('fa-angles-left');
+            }
+        }
+    </script>
+</body>
+</html>
